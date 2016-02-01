@@ -17,9 +17,10 @@ class Hongbao
         for ($i = 1; $i < $num; ++$i) { 
             $maxMoney = $remainingMoney - ($num - $i) * $this->minMoney;
             $money = mt_rand($this->minMoney * 100, $maxMoney * 100) / 100;
-            $this->hongbao[$id][] = $money;
+            $this->hongbao[$id][] = number_format($money, 2, '.', '');
             $remainingMoney -= $money;
         }
+        $this->hongbao[$id][] = number_format(round($remainingMoney, 2), 2, '.', '');    // 最后一个剩余金额全放入
         shuffle($this->hongbao[$id]);
 
         return $id;
@@ -28,9 +29,9 @@ class Hongbao
     // 领取红包
     public function get($id)
     {
-        if empty($this->hongbao[$id]) {
+        if (empty($this->hongbao[$id])) {
             return false;
         }
-        return array_unshift($this->hongbao[$id]);
+        return array_shift($this->hongbao[$id]);
     }
 }
